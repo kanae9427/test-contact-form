@@ -1,0 +1,41 @@
+.header {
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    padding: 10px 20px;
+}
+
+.header__inner {
+    display: flex;
+    max-width: 1512px;
+    height: 100;
+    border-width: 1px;
+}
+
+.header__logo {
+    flex-grow: 1;
+    font-family: Inika;
+    font-weight: 400;
+    font-size: 40px;
+    color: #8B7969;
+    line-height: 52.12px;
+    letter-spacing: 0%;
+    text-align: center;
+}
+
+.header-button{
+    display: flex;
+    background: #F0F0F099;
+}
+
+.header-button__item{
+    font-family: Inika;
+    font: weight 98px;
+    height: 32px;
+    font-size: 20px;
+    color: #D9C6B5;
+    padding: 2px;
+    border: #8B7969;
+    border-radius: 5px;
+    cursor:pointer;
+}
