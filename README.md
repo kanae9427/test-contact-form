@@ -2,7 +2,7 @@
 ## 環境構築
 Dockeビルド  
 
-1.   
+1. git@github.com:kanae9427/test-contact-form.git  
 2. docker-compose up -d --build  
 
 ＊MySQLは、OSによって起動しない場合があるのでそれぞれのｐｃに合わせてdocker-compose.ymlファイルを編集してください。  
