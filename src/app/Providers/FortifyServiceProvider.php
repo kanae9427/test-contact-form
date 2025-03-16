@@ -3,15 +3,11 @@
 namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 
 
@@ -45,11 +41,16 @@ class FortifyServiceProvider extends ServiceProvider
         );
 
         Fortify::authenticateUsing(function (Request $request) {
-            $user = \App\Models\User::where('email', $request->email)->first();
+            // バリデーションをリクエストクラスで処理
+            $validated = app(\App\Http\Requests\LoginRequest::class)->validated();
+            $user = \App\Models\User::where('email', $validated['email'])->first();
 
-            if ($user && Hash::check($request->password, $user->password)) {
+            if ($user && Hash::check($validated['password'], $user->password)) {
                 return $user;
             }
+
+            // ログイン失敗時に例外をスロー
+            return null;
         });
 
         RateLimiter::for(

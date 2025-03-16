@@ -19,50 +19,31 @@ class ContactController extends Controller
 
     public function confirm(ContactRequest $request)
     {
-        $tel = $request->tel_part1 . $request->tel_part2 .$request->tel_part3;
-
-        $contact = $request->only([
-            'first_name',
-            'last_name',
-            'gender',
-            'email',
-            'address',
-            'building',
-            'category_id',
-            'detail'
-        ]);
-
-        $contact['tel'] = $tel;
-
-        //genderの値を数値に変換
-        $contact['gender'] = $contact['gender'] == '男性' ? 1 : ($contact['gender'] == '女性' ? 2 : 3);
-
-        // カテゴリデータを取得します
-        $categories = Category::all();
-
-        // category_id に基づいて category を設定
-        $contact['category'] = Category::find($contact['category_id'])->content;
-
-        return view('contact.confirm', compact('contact', 'categories'));
+        $contacts = $request->all();
+        $category = Category::find($request->category_id);
+        return view('contact.confirm', compact('contacts', 'category'));
     }
+
     public function thanks(Request $request)
     {
-        $tel = $request->tel_part1 . $request->tel_part2 . $request->tel_part3;
+        if ($request->has('back')) {
+            return redirect('/')->withInput();
+        }
 
-        $contact['tel'] = $tel;
-
-        $contact = $request->only([
-            'first_name',
-            'last_name',
-            'gender',
-            'email',
-            'tel',
-            'address',
-            'building',
-            'category_id',
-            'detail']);
-
-        Contact::create($contact);
+        $request['tel'] = $request->tel_1 . $request->tel_2 . $request->tel_3;
+        Contact::create(
+            $request->only([
+                'category_id',
+                'first_name',
+                'last_name',
+                'gender',
+                'email',
+                'tel',
+                'address',
+                'building',
+                'detail'
+            ])
+        );
         return view('contact.thanks');
     }
 }
